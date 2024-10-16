@@ -8,7 +8,7 @@ import com.plcoding.cryptotracker.core.domain.util.map
 import com.plcoding.cryptotracker.crypto.data.dto.CoinsResponseDto
 import com.plcoding.cryptotracker.crypto.domain.Coin
 import com.plcoding.cryptotracker.crypto.domain.CoinDataSource
-import com.plcoding.cryptotracker.crypto.domain.mapper.toCOin
+import com.plcoding.cryptotracker.crypto.domain.mapper.toCoin
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
@@ -22,7 +22,7 @@ class RemoteCoinDataSource(
             )
         }.map { response ->
             response.data.map {
-                it.toCOin()
+                it.toCoin()
             }
         }
     }
