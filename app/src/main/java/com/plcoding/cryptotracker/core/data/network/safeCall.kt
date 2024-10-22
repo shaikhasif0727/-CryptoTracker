@@ -20,6 +20,7 @@ suspend inline fun <reified T> safeCall(
         return Result.Error(NetworkError.SERIALIZATION)
     } catch (e: Exception){
         coroutineContext.ensureActive()
+        e.printStackTrace()
         return Result.Error(NetworkError.UNKNOWN)
     }
 
