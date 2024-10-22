@@ -14,8 +14,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.plcoding.cryptotracker.core.paresentation.util.ObserveAsEvents
 import com.plcoding.cryptotracker.core.paresentation.util.toString
-import com.plcoding.cryptotracker.crypto.presentation.CoinListScreen
+import com.plcoding.cryptotracker.crypto.presentation.coin_detail.CoinDetailScreen
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListEvent
+import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListScreen
 import com.plcoding.cryptotracker.crypto.presentation.coin_list.CoinListViewModel
 import com.plcoding.cryptotracker.ui.theme.CryptoTrackerTheme
 import org.koin.androidx.compose.koinViewModel
@@ -31,19 +32,33 @@ class MainActivity : ComponentActivity() {
                     val state by viewModel.state.collectAsStateWithLifecycle()
                     val context = LocalContext.current
                     ObserveAsEvents(event = viewModel.event) { event ->
-                        when(event){
+                        when (event) {
                             is CoinListEvent.Error -> {
-                                Toast.makeText(context,
+                                Toast.makeText(
+                                    context,
                                     event.message.toString(context),
-                                    Toast.LENGTH_LONG).show()
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
                     }
+                    when {
+                        state.selectedCoin != null -> {
+                            CoinDetailScreen(
+                                state = state,
+                                modifier = Modifier.padding(innerPadding)
+                            )
+                        }
 
-                    CoinListScreen(
-                        state =state,
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                        else -> {
+                            CoinListScreen(
+                                state = state,
+                                modifier = Modifier.padding(innerPadding),
+                                onAction = viewModel::onAction
+                            )
+                        }
+                    }
+
                 }
             }
         }
